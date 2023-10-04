@@ -29,7 +29,6 @@ gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
 gsettings set org.gnome.desktop.peripherals.touchpad click-method 'fingers'
 
 # Desactivar solicitud de contraseña al inicio de sesión
-# ATENCIÓN: Desactivar la contraseña puede exponer tu sistema a riesgos de seguridad
 echo "Configurando inicio de sesión automático para GDM..."
 
 if ! grep -q "\[daemon\]" /etc/gdm3/daemon.conf; then
@@ -38,5 +37,11 @@ fi
 
 sudo sed -i 's/^#*\(\s*AutomaticLoginEnable\s*=\s*\).*/\1true/' /etc/gdm3/daemon.conf
 sudo sed -i 's/^#*\(\s*AutomaticLogin\s*=\s*\).*/\1ecobiblioteca/' /etc/gdm3/daemon.conf
+
+# Desactivar la pantalla de GRUB al inicio
+echo "Configurando GRUB para iniciar directamente..."
+sudo sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
+sudo sed -i 's/GRUB_HIDDEN_TIMEOUT=.*/GRUB_HIDDEN_TIMEOUT=0/' /etc/default/grub
+sudo update-grub
 
 echo "Configuración aplicada con éxito"
